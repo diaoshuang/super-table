@@ -1,101 +1,35 @@
 <template>
-  <ELTable :data="tableData" :headers="headers" :span-method="arraySpanMethod"/>
+  <ELTable
+    :data="tableData"
+    :headers="headers"
+    :span-method="arraySpanMethod"
+  />
 </template>
 <script lang="ts">
-import { defineComponent } from 'vue'
-import ELTable from '@/components/ELTable.vue'
+import { defineComponent } from 'vue';
+import ELTable from '@/components/ELTable.vue';
+import apis from '../apis';
+
 export default defineComponent({
   name: 'Example',
+  components: {
+    ELTable,
+  },
   data() {
     return {
-      headers: [
-        {
-          label: '日期',
-          prop: 'date',
-          width: '120'
-        },
-        {
-          label: '配送信息',
-          children: [
-            {
-              label: '姓名',
-              prop: 'name',
-            },
-            {
-              label: '地址',
-              prop: '',
-              children: [
-                {
-                  label: '省份',
-                  prop: 'province',
-                },
-                {
-                  label: '市区',
-                  prop: 'city',
-                },
-                {
-                  label: '地址',
-                  prop: 'address',
-                },
-                {
-                  label: '邮编',
-                  prop: 'zip',
-                },
-              ],
-            },
-          ]
-        }
-      ],
-      tableData: [{
-        date: '2016-05-03',
-        name: '王小虎',
-        province: '上海',
-        city: '普陀区',
-        address: '上海市普陀区金沙江路 1518 弄',
-        zip: 200333
-      }, {
-        date: '2016-05-02',
-        name: '王小虎',
-        province: '上海',
-        city: '普陀区',
-        address: '上海市普陀区金沙江路 1518 弄',
-        zip: 200333
-      }, {
-        date: '2016-05-04',
-        name: '王小虎',
-        province: '上海',
-        city: '普陀区',
-        address: '上海市普陀区金沙江路 1518 弄',
-        zip: 200333
-      }, {
-        date: '2016-05-01',
-        name: '王小虎',
-        province: '上海',
-        city: '普陀区',
-        address: '上海市普陀区金沙江路 1518 弄',
-        zip: 200333
-      }, {
-        date: '2016-05-08',
-        name: '王小虎',
-        province: '上海',
-        city: '普陀区',
-        address: '上海市普陀区金沙江路 1518 弄',
-        zip: 200333
-      }, {
-        date: '2016-05-06',
-        name: '王小虎',
-        province: '上海',
-        city: '普陀区',
-        address: '上海市普陀区金沙江路 1518 弄',
-        zip: 200333
-      }, {
-        date: '2016-05-07',
-        name: '王小虎',
-        province: '上海',
-        city: '普陀区',
-        address: '上海市普陀区金沙江路 1518 弄',
-        zip: 200333
-      }]
+      headers: [],
+      tableData: [],
+    };
+  },
+  async created() {
+    // mock请求
+    const {data} = await apis.getTableHeader();
+    if (data.code === 0) {
+      this.headers = data.data
+    }
+    const {data: tableData} = await apis.getTableData();
+    if (tableData.code === 0) {
+      this.tableData = tableData.data
     }
   },
   methods: {
@@ -107,17 +41,13 @@ export default defineComponent({
           return [0, 0];
         }
         if (columnIndex === 2) {
-          return [2,1]
+          return [2, 1];
         }
       } else if (columnIndex === 2) {
-        return [0,0]
+        return [0, 0];
       }
     },
   },
-  components: {
-    ELTable
-  },
-})
+});
 </script>
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>
