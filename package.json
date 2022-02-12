@@ -5,6 +5,7 @@
     "dev": "vite",
     "dev:mock": "cross-env USE_MOCK=true vite",
     "build": "vue-tsc --noEmit && vite build",
+    "build:mock": "vue-tsc --noEmit && USE_CHUNK_MOCK=true vite build",
     "preview": "vite preview"
   },
   "dependencies": {
