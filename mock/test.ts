@@ -45,6 +45,9 @@ export default [
               },
             ],
           },
+          {
+            label: '订单信息',
+          }
         ],
       }
     },
