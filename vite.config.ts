@@ -1,12 +1,25 @@
 import { defineConfig } from 'vite'
 import { viteMockServe } from 'vite-plugin-mock'
 import vue from '@vitejs/plugin-vue'
+import externalGlobals from 'rollup-plugin-external-globals'
 
 const localEnabled = process.env.USE_MOCK === 'true' || false
 const prodMock =  process.env.USE_CHUNK_MOCK === 'true' || false
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  build: {
+    rollupOptions: {
+      external: ['vue', 'element-plus', 'echarts'],
+      plugins: [
+        externalGlobals({
+          vue: 'Vue',
+          'element-plus': 'ElementPlus',
+          echarts: 'echarts'
+        }),
+      ]
+    }
+  },
   plugins: [
     vue(),
     viteMockServe({
@@ -28,13 +41,13 @@ export default defineConfig({
       '@': '/src',
     }
   },
-  // server: {
-  //   proxy: {
-  //     '/api': {
-  //       changeOrigin: true,
-  //       secure: false,
-  //       target: ''
-  //     },
-  //   }
-  // }
+  server: {
+    proxy: {
+      '/api': {
+        changeOrigin: true,
+        secure: false,
+        target: 'http://localhost:8080'
+      },
+    }
+  }
 })

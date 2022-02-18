@@ -19,13 +19,18 @@ export const adjustParams = (url: string, method: string, params: {[key: string]
 async function getTableHeader(params: TableHeaderParams = {}) {
   return request(adjustParams('/api/table-header', 'get', params))
 }
-
-async function getTableData(params: TableDataParams = {cn: 1, sn: 10}) {
-  return request(adjustParams('/api/table-data', 'get', params))
+// 获取Total数据
+async function getTableData(params: TableDataParams = {pageNumber: 0, pageSize: 10}) {
+  return request(adjustParams('/api/reportAll', 'get', {params}))
+}
+// 获取Sub Table数据
+async function getSubTableData(params: SubTableDataParams = {pageNumber: 0, pageSize: 10, dateString: ''}) {
+  return request(adjustParams('/api/reportSub', 'get', {params}))
 }
 
 const apis = {
   getTableHeader,
   getTableData,
+  getSubTableData,
 }
 export default apis

@@ -1,0 +1,331 @@
+<template>
+  <div class="show-area filters">
+    <h4>筛选</h4>
+    <el-date-picker
+      v-model="selectDate"
+      type="daterange"
+      align="right"
+      unlink-panels
+      range-separator="至"
+      start-placeholder="开始日期"
+      end-placeholder="结束日期"
+      :picker-options="pickerOptions"
+    >
+    </el-date-picker>
+  </div>
+  <div class="show-area chart">
+    <MyChart
+      style="height: 200px"
+      :key="chartOptions"
+      :chartOptions="chartOptions"
+    />
+  </div>
+  <div class="show-area total-table">
+    <h2>总表</h2>
+    <el-button type="text" @click="handleRefresh">刷新</el-button>
+    <ELTable
+      class="total-table"
+      :data="tableData"
+      @row-click="handleRowClick"
+      :headers="headers"
+    />
+    <div class="show-right">
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="pageNumber"
+        :page-sizes="[10, 50, 100]"
+        :page-size="pageSize"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="totalCount"
+      >
+      </el-pagination>
+    </div>
+  </div>
+  <div v-if="showRow" class="show-area sub-table">
+    <subTable :key="(showRow as any).dateString" :rowData="showRow" />
+  </div>
+</template>
+<script lang="ts">
+import { defineComponent } from 'vue';
+import MyChart from '@/components/charts/Index.vue';
+import ELTable from '@/components/ELTable.vue';
+import SubTable from '@/components/SubTableShow.vue';
+import apis from '../apis';
+
+export default defineComponent({
+  name: 'TotalTable',
+  components: {
+    ELTable,
+    SubTable,
+    MyChart,
+  },
+  //   "reportDate": "2022年02月11日",  // 时间
+  // "week": "", // 时间
+  // "totalOrder": 16366070, // 销售总额
+  // "totalCost": 1148.0, // 总花费
+  // "totalOrderCount": 0, // 总订单量
+  // "resourceCost": 0, // 资源成本
+  // "cup": 1.1,  // 客单价
+  // "roi": 1.1, // 投产比
+  data() {
+    return {
+      pickerOptions: {
+        shortcuts: [
+          {
+            text: '最近一周',
+            onClick(picker: any) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+              picker.$emit('pick', [start, end]);
+            },
+          },
+          {
+            text: '最近一个月',
+            onClick(picker: any) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+              picker.$emit('pick', [start, end]);
+            },
+          },
+          {
+            text: '最近三个月',
+            onClick(picker: any) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+              picker.$emit('pick', [start, end]);
+            },
+          },
+        ],
+      },
+      selectDate: '',
+      options: [
+        {
+          value: '销售总额',
+          label: '销售总额',
+        },
+        {
+          value: '总花费',
+          label: '总花费',
+        },
+        {
+          value: '总订单量',
+          label: '总订单量',
+        },
+        {
+          value: '资源成本',
+          label: '资源成本',
+        },
+        {
+          value: '客单价',
+          label: '客单价',
+        },
+        {
+          value: '投产比',
+          label: '投产比',
+        },
+      ],
+      chartShowItem: '销售总额',
+      headers: [
+        {
+          label: '日期',
+          children: [
+            {
+              label: '',
+              prop: 'reportDate',
+              className: 'hidden-cell',
+              width: 150,
+            },
+            {
+              label: '',
+              prop: 'week',
+              className: 'hidden-cell',
+              width: 100,
+            },
+          ],
+        },
+        {
+          label: '销售总额',
+          prop: 'totalOrder',
+          minWidth: 100,
+        },
+        {
+          label: '总花费',
+          prop: 'totalCost',
+          minWidth: 100,
+        },
+        {
+          label: '总订单量',
+          prop: 'totalOrderCount',
+          minWidth: 100,
+        },
+        {
+          label: '资源成本',
+          prop: 'resourceCost',
+          minWidth: 100,
+        },
+        {
+          label: '客单价',
+          prop: 'cup',
+          minWidth: 100,
+        },
+        {
+          label: '投产比',
+          prop: 'roi',
+          minWidth: 100,
+        },
+      ],
+      keyValues: {
+        销售总额: 'totalOrder',
+        总花费: 'totalCost',
+        总订单量: 'totalOrderCount',
+        资源成本: 'resourceCost',
+        客单价: 'cup',
+        投产比: 'roi',
+      },
+      tableData: [],
+      strLocalFlag: 'localhost',
+      pageNumber: 1,
+      pageSize: 10,
+      totalCount: 0,
+      showRow: null,
+      chartOptions: {},
+    };
+  },
+
+  created() {
+    this.getTotalData();
+  },
+  methods: {
+    handleRefresh() {
+      this.getTotalData();
+    },
+    getDimensions() {
+      const keys = Object.keys(this.keyValues);
+      return ['date', ...keys];
+    },
+    getSource() {
+      const arr: any[] = [];
+      this.tableData.forEach((item: any) => {
+        const obj: { [key: string]: string | number } = {
+          date: item.reportDate,
+        };
+        Object.keys(this.keyValues).forEach((key: string) => {
+          const value: string = (this as any).keyValues[key]
+          obj[key] = item[value];
+        });
+        arr.push(obj);
+      });
+      return arr;
+    },
+    getShowChartOptions() {
+      return {
+        title: {
+          text: this.chartShowItem,
+        },
+        xAxis: {
+          type: 'category',
+          data: [],
+        },
+        yAxis: {
+          type: 'value',
+        },
+        series: [
+          {
+            data: [],
+            type: 'bar',
+          },
+        ],
+      };
+    },
+    chartInit() {
+      const dimensions: string[] = this.getDimensions();
+      const source: any = this.getSource();
+      const series = Object.keys(this.keyValues).map((key) => ({
+        type: 'bar',
+      }));
+      this.chartOptions = {
+        title: {
+          text: '汇总数据',
+        },
+        legend: {},
+        tooltip: {},
+        dataset: {
+          dimensions,
+          source,
+        },
+        xAxis: { type: 'category' },
+        yAxis: {},
+        // Declare several bar series, each will be mapped
+        // to a column of dataset.source by default.
+        series,
+      };
+    },
+    arraySpanMethod({ row, column, rowIndex, columnIndex }: any) {
+      if (rowIndex % 2 === 0) {
+        if (columnIndex === 0) {
+          return [1, 2];
+        } else if (columnIndex === 1) {
+          return [0, 0];
+        }
+        if (columnIndex === 2) {
+          return [2, 1];
+        }
+      } else if (columnIndex === 2) {
+        return [0, 0];
+      }
+    },
+    handleSizeChange(val: number) {
+      this.pageSize = val;
+      this.getTotalData();
+    },
+    handleCurrentChange(val: number) {
+      this.pageNumber = val;
+      this.getTotalData();
+    },
+    async getTotalData() {
+      const params = {
+        pageNumber: this.pageNumber - 1,
+        pageSize: this.pageSize,
+      };
+      const { data } = await apis.getTableData(params);
+      const { content = [], totalElements = 0, pageNumber = 1 } = data;
+      this.tableData = content;
+      this.chartInit();
+      this.pageNumber = pageNumber + 1;
+      this.totalCount = totalElements;
+      this.strLocalFlag = 'api';
+    },
+    handleRowClick(row: any) {
+      this.showRow = row;
+    },
+  },
+});
+</script>
+<style lang="scss" scoped>
+.show-area {
+  background-color: #eee;
+  border: 1px solid black;
+  border-radius: 5px;
+  margin: 10px 20px 20px;
+  overflow: hidden;
+  padding: 5px;
+}
+
+.show-right {
+  float: right;
+  margin: 5px 0;
+
+  &::after {
+    content: '';
+    display: table;
+    clear: both;
+  }
+}
+.sub-table {
+  padding-bottom: 20px;
+}
+</style>

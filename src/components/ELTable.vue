@@ -21,3 +21,10 @@ export default defineComponent({
   }
 })
 </script>
+<style lang="scss" scoped>
+::v-deep {
+  th.hidden-cell {
+    display: none;
+  }
+}
+</style>

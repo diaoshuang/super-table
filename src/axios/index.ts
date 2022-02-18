@@ -147,14 +147,14 @@ instance.interceptors.request.use(
 )
 
 // 响应拦截器
-instance.interceptors.response.use(config => {
+instance.interceptors.response.use(res => {
 
-  removePending(config.config);
+  removePending(res.config);
   // 请求成功
-  if (config.status === 200 || config.status === 204) {
-    return Promise.resolve(config);
+  if (res.status === 200 || res.status === 204) {
+    return Promise.resolve(res);
   } else {
-    return Promise.reject(config);
+    return Promise.reject(res);
   }
   // 请求失败
 }, (error: AxiosError) => {
