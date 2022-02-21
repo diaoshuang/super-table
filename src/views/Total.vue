@@ -16,6 +16,7 @@
   <div class="show-area chart">
     <MyChart
       style="height: 200px"
+      :loading="totalLoading"
       :key="chartOptions"
       :chartOptions="chartOptions"
     />
@@ -48,6 +49,7 @@
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue';
+import { ElLoading } from 'element-plus';
 import MyChart from '@/components/charts/Index.vue';
 import ELTable from '@/components/ELTable.vue';
 import SubTable from '@/components/SubTableShow.vue';
@@ -60,14 +62,6 @@ export default defineComponent({
     SubTable,
     MyChart,
   },
-  //   "reportDate": "2022年02月11日",  // 时间
-  // "week": "", // 时间
-  // "totalOrder": 16366070, // 销售总额
-  // "totalCost": 1148.0, // 总花费
-  // "totalOrderCount": 0, // 总订单量
-  // "resourceCost": 0, // 资源成本
-  // "cup": 1.1,  // 客单价
-  // "roi": 1.1, // 投产比
   data() {
     return {
       pickerOptions: {
@@ -193,9 +187,9 @@ export default defineComponent({
       totalCount: 0,
       showRow: null,
       chartOptions: {},
+      totalLoading: true,
     };
   },
-
   created() {
     this.getTotalData();
   },
@@ -214,7 +208,7 @@ export default defineComponent({
           date: item.reportDate,
         };
         Object.keys(this.keyValues).forEach((key: string) => {
-          const value: string = (this as any).keyValues[key]
+          const value: string = (this as any).keyValues[key];
           obj[key] = item[value];
         });
         arr.push(obj);
@@ -291,7 +285,10 @@ export default defineComponent({
         pageNumber: this.pageNumber - 1,
         pageSize: this.pageSize,
       };
+      this.totalLoading = true;
       const { data } = await apis.getTableData(params);
+      this.totalLoading = false;
+      ElLoading.service().close();
       const { content = [], totalElements = 0, pageNumber = 1 } = data;
       this.tableData = content;
       this.chartInit();
