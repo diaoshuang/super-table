@@ -46,7 +46,8 @@ export default defineConfig({
       '/api': {
         changeOrigin: true,
         secure: false,
-        target: 'http://localhost:8080'
+        // target: 'http://localhost:8080' // local
+        target: 'http://82.157.169.92:8080' // prod
       },
     }
   }

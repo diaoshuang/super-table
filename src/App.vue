@@ -31,7 +31,8 @@ export default defineComponent({
 </script>
 <style>
 html, body {
-  height: 100%;
+  min-height: 100%;
+  width: 100%;
   margin: 0;
   padding: 0;
 }
@@ -41,6 +42,9 @@ h3,
 h4 {
   margin: 0;
   padding: 0;
+}
+#app {
+  overflow: hidden;
 }
 </style>
 

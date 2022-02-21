@@ -4,7 +4,7 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    redirect: '/total'
+    redirect: '/tt'
   },
   {
     path: '/example',
@@ -12,9 +12,14 @@ const routes = [
     component: () => import('../views/Example.vue')
   },
   {
-    path: '/total',
+    path: '/tt',
     name: 'Total',
     component: () => import('../views/Total.vue')
+  },
+  {
+    path: '/totalwdt',
+    name: 'TotalWdt',
+    component: () => import('../views/TotalWdt.vue')
   },
   {
     path: '/test',
@@ -25,7 +30,7 @@ const routes = [
 ]
 
 const router = createRouter({
-  history: createWebHashHistory('/#tpl/tt/'),
+  history: createWebHashHistory('/#tpl'),
   routes
 })
 

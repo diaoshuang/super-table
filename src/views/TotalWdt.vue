@@ -44,7 +44,7 @@
     </div>
   </div>
   <div v-if="showRow" class="show-area sub-table">
-    <subTable :key="(showRow as any).dateString" :rowData="showRow" />
+    <SubTableWdt :key="(showRow as any).dateString" :rowData="showRow" />
   </div>
 </template>
 <script lang="ts">
@@ -52,14 +52,14 @@ import { defineComponent } from 'vue';
 import { ElLoading } from 'element-plus';
 import MyChart from '@/components/charts/Index.vue';
 import ELTable from '@/components/ELTable.vue';
-import SubTable from '@/components/SubTableShow.vue';
+import SubTableWdt from '@/components/SubTableWdtShow.vue';
 import apis from '../apis';
 
 export default defineComponent({
   name: 'TotalTable',
   components: {
     ELTable,
-    SubTable,
+    SubTableWdt,
     MyChart,
   },
   data() {
@@ -143,42 +143,42 @@ export default defineComponent({
         },
         {
           label: '销售总额',
-          prop: 'totalOrder',
+          prop: 'totalSales',
           minWidth: 100,
         },
         {
           label: '总花费',
-          prop: 'totalCost',
+          prop: 'totalExpenses',
           minWidth: 100,
         },
         {
           label: '总订单量',
-          prop: 'totalOrderCount',
+          prop: 'orderQuantity',
           minWidth: 100,
         },
         {
           label: '资源成本',
-          prop: 'resourceCost',
+          prop: 'conversionCost',
           minWidth: 100,
         },
         {
           label: '客单价',
-          prop: 'cup',
+          prop: 'customerPrice',
           minWidth: 100,
         },
         {
           label: '投产比',
-          prop: 'roi',
+          prop: 'proportionTotalInvestment',
           minWidth: 100,
         },
       ],
       keyValues: {
-        销售总额: 'totalOrder',
-        总花费: 'totalCost',
-        总订单量: 'totalOrderCount',
-        资源成本: 'resourceCost',
-        客单价: 'cup',
-        投产比: 'roi',
+        销售总额: 'totalSales',
+        总花费: 'totalExpenses',
+        总订单量: 'orderQuantity',
+        资源成本: 'conversionCost',
+        客单价: 'customerPrice',
+        投产比: 'proportionTotalInvestment',
       },
       tableData: [],
       strLocalFlag: 'localhost',
@@ -286,7 +286,7 @@ export default defineComponent({
         pageSize: this.pageSize,
       };
       this.totalLoading = true;
-      const { data } = await apis.getTableData(params);
+      const { data } = await apis.getWdtTableData(params);
       this.totalLoading = false;
       ElLoading.service().close();
       const { list = [], totalElements = 0, pageNumber = 1 } = data.data;

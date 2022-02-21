@@ -4,7 +4,6 @@
     :data="tableData"
     height="500"
     :headers="headers"
-    :span-method="arraySpanMethod"
   />
   <div class="show-right">
     <el-pagination
@@ -49,82 +48,93 @@ export default defineComponent({
     return {
       headers: [
         {
-          label: '账户',
-          prop: 'name',
+          label: '平台',
+          prop: 'platform',
           width: 200,
         },
         {
-          label: '',
-          prop: 'marketingGoal',
-        },
-        {
-          label: '销售额',
-          prop: 'totalOrder',
+          label: '总销售额',
+          prop: 'totalSales',
           width: 100,
         },
         {
-          label: '花费',
-          prop: 'totalCost',
+          label: '总花销',
+          prop: 'TotalExpenses',
+          width: 100,
+        },
+        {
+          label: '总投产比',
+          prop: 'proportionTotalInvestment',
+          width: 100,
+        },
+        {
+          label: '浏览量',
+          prop: 'views',
+          width: 100,
+        },
+        {
+          label: '访客数',
+          prop: 'numberVisitors',
           width: 100,
         },
         {
           label: '订单量',
-          prop: 'totalOrderCount',
-          width: 100,
-        },
-        {
-          label: '资源成本',
-          prop: 'resourceCost',
+          prop: 'customerPrice',
           width: 100,
         },
         {
           label: '客单价',
-          prop: 'cup',
+          prop: 'customerPrice',
           width: 100,
         },
         {
-          label: '投产比',
-          prop: 'roi',
+          label: '转化率',
+          prop: 'conversionRate',
           width: 100,
         },
         {
-          label: '展现量',
-          prop: 'showCnt',
+          label: '转化成本',
+          prop: 'conversionCost',
           width: 100,
         },
         {
-          label: '点击量',
-          prop: 'clickCnt',
+          label: '站内花费',
+          prop: 'stationExpenses',
           width: 100,
         },
         {
-          label: '点击率',
-          prop: 'clickThroughRate',
+          label: '站内成交金额',
+          prop: 'transactionStation',
+          width: 110,
+        },
+        {
+          label: '站内投产比',
+          prop: 'productionRatio',
           width: 100,
         },
         {
-          label: '订单转化率',
-          prop: 'orderConversionRate',
-          width: 120,
-        },
-        {
-          label: '累计观看人数',
-          prop: 'totalPlay',
-          width: 120,
-        },
-        {
-          label: '新增粉丝数',
-          prop: 'dyFollow',
+          label: '复购金额',
+          prop: 'repurchaseAmount',
           width: 100,
         },
         {
-          label: '加粉率',
-          prop: 'powderAdditionRate',
+          label: '复购占比',
+          prop: 'purchaseReadiness',
           width: 100,
         },
         {
-          label: '粉丝成本',
-          prop: 'fanCost',
+          label: '站外花费',
+          prop: 'offStationExpenses',
+          width: 100,
+        },
+        {
+          label: '站外成交额',
+          prop: 'offSiteTurnover',
+          width: 100,
+        },
+        {
+          label: '站外投占比',
+          prop: 'offInvestment',
           width: 100,
         },
       ],
@@ -165,9 +175,9 @@ export default defineComponent({
         pageSize: this.pageSize,
         dateString: this.dateString,
       };
-      const { data } = await apis.getSubTableData(params);
+      const { data } = await apis.getWdtSubTableData(params);
       const { list = [], totalElements = 0, pageNumber = 0 } = data.data;
-      this.tableData = this.formatData(list);
+      this.tableData = list; // this.formatData(list);
       this.pageNumber = pageNumber + 1;
       this.totalCount = totalElements;
       this.strLocalFlag = 'api';
@@ -175,13 +185,13 @@ export default defineComponent({
     handleRowClick(row: any) {
       this.showDate = row.dateString;
     },
-    arraySpanMethod({ row, column, rowIndex, columnIndex }: any) {
-      if (rowIndex % 2 === 0 && columnIndex === 0) {
-        return [2, 1];
-      } else if (rowIndex % 2 === 1 && columnIndex === 0) {
-        return [0, 0];
-      }
-    },
+    // arraySpanMethod({ row, column, rowIndex, columnIndex }: any) {
+    //   if (rowIndex % 2 === 0 && columnIndex === 0) {
+    //     return [2, 1];
+    //   } else if (rowIndex % 2 === 1 && columnIndex === 0) {
+    //     return [0, 0];
+    //   }
+    // },
   },
 });
 </script>

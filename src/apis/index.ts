@@ -27,10 +27,20 @@ async function getTableData(params: TableDataParams = {pageNumber: 0, pageSize: 
 async function getSubTableData(params: SubTableDataParams = {pageNumber: 0, pageSize: 10, dateString: ''}) {
   return request(adjustParams('/api/reportSub', 'get', {params}))
 }
+// 获取Wdt Total数据
+async function getWdtTableData(params: TableDataParams = {pageNumber: 0, pageSize: 10}) {
+  return request(adjustParams('/api/reportWdtAll', 'get', {params}))
+}
+// 获取Wdt Sub Table数据
+async function getWdtSubTableData(params: SubTableDataParams = {pageNumber: 0, pageSize: 10, dateString: ''}) {
+  return request(adjustParams('/api/reportWdtSub', 'get', {params}))
+}
 
 const apis = {
   getTableHeader,
   getTableData,
   getSubTableData,
+  getWdtTableData,
+  getWdtSubTableData,
 }
 export default apis
