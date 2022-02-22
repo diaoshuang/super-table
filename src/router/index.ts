@@ -4,7 +4,7 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    redirect: '/tt'
+    redirect: '/totalwdt'
   },
   {
     path: '/example',

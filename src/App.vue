@@ -1,10 +1,5 @@
 
 <template>
-  <!-- <router-link :to="{name: 'Example'}">Home</router-link>
-  |
-  <router-link :to="{name: 'Template2'}">T2</router-link>
-  |
-  <router-link :to="{name: 'Total'}">Total</router-link> -->
   <PageLoading v-if="loading" />
   <router-view></router-view>
 </template>
@@ -23,8 +18,12 @@ export default defineComponent({
     }
     provide('loading', readonly(loading));
     provide('changeLoading', changeLoading);
+    const handleTest = () => {
+      console.log('href:', location.href)
+    }
     return {
       loading,
+      handleTest
     };
   },
 });
