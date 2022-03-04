@@ -22,7 +22,12 @@
     />
   </div>
   <div class="show-area total-table">
-    <h2>总表</h2>
+    <h2>
+      总表
+      <el-button class="upload-button" @click="showUploadFile = !showUploadFile"
+        >导入</el-button
+      >
+    </h2>
     <el-button type="text" @click="handleRefresh">刷新</el-button>
     <ELTable
       class="total-table"
@@ -46,6 +51,7 @@
   <div v-if="showRow" class="show-area sub-table">
     <SubTableWdt :key="(showRow as any).dateString" :rowData="showRow" />
   </div>
+  <UploadFile v-model:show="showUploadFile" />
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue';
@@ -53,6 +59,7 @@ import { ElLoading } from 'element-plus';
 import MyChart from '@/components/charts/Index.vue';
 import ELTable from '@/components/ELTable.vue';
 import SubTableWdt from '@/components/SubTableWdtShow.vue';
+import UploadFile from '@/components/UploadFiles.vue';
 import apis from '../apis';
 
 export default defineComponent({
@@ -61,6 +68,7 @@ export default defineComponent({
     ELTable,
     SubTableWdt,
     MyChart,
+    UploadFile,
   },
   data() {
     return {
@@ -188,6 +196,7 @@ export default defineComponent({
       showRow: null,
       chartOptions: {},
       totalLoading: true,
+      showUploadFile: false,
     };
   },
   created() {
@@ -310,6 +319,9 @@ export default defineComponent({
   margin: 10px 20px 20px;
   overflow: hidden;
   padding: 5px;
+}
+.upload-button {
+  float: right;
 }
 
 .show-right {

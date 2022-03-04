@@ -59,7 +59,7 @@ export default defineComponent({
         },
         {
           label: '总花销',
-          prop: 'TotalExpenses',
+          prop: 'totalExpenses',
           width: 100,
         },
         {
