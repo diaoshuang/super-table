@@ -1,5 +1,5 @@
 <template>
-  <el-drawer v-model="drawer2" :direction="direction" size="300">
+  <el-drawer v-model="drawer" :direction="direction" size="300">
     <template #title>
       <h4>上传数据文件</h4>
     </template>
@@ -8,7 +8,7 @@
         class="upload-demo"
         ref="uploadRef"
         drag
-        action="https://jsonplaceholder.typicode.com/posts/"
+        action="/api/saveWdtData"
         :auto-upload="false"
         multiple
       >
@@ -35,7 +35,6 @@
 <script lang="ts" setup>
 import { ref, computed, defineEmits } from 'vue';
 import { ElMessageBox } from 'element-plus';
-import { UploadFilled } from '@element-plus/icons-vue';
 import type { ElUpload } from 'element-plus'
 
 interface Props {
@@ -51,7 +50,7 @@ const emit = defineEmits<{
   (type: string, flag: boolean): void
 }>()
 
-const drawer2 = computed({
+const drawer = computed({
   get() {
     return props.show
   },
@@ -59,17 +58,16 @@ const drawer2 = computed({
     emit('update:show', nV)
   }});
 const direction = ref('rtl');
-const radio1 = ref('Option 1');
 const handleClose = (done: () => void) => {
   done();
 };
 function cancelClick() {
-  drawer2.value = false;
+  drawer.value = false;
 }
 function confirmClick() {
-  ElMessageBox.confirm(`开始上传：${radio1.value} ?`)
+  ElMessageBox.confirm(`开始上传文件吗？`)
     .then(() => {
-      drawer2.value = false;
+      uploadRef.value!.submit();
     })
     .catch(() => {
       // catch error

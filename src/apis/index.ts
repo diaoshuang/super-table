@@ -35,6 +35,10 @@ async function getWdtTableData(params: TableDataParams = {pageNumber: 0, pageSiz
 async function getWdtSubTableData(params: SubTableDataParams = {pageNumber: 0, pageSize: 10, dateString: ''}) {
   return request(adjustParams('/api/reportWdtSub', 'get', {params}))
 }
+// 导入文件
+async function importFile(params: any = {}) {
+  return request(adjustParams('/api/saveWdtData', 'post', {params}))
+}
 
 const apis = {
   getTableHeader,
@@ -42,5 +46,6 @@ const apis = {
   getSubTableData,
   getWdtTableData,
   getWdtSubTableData,
+  importFile,
 }
 export default apis
