@@ -290,19 +290,19 @@ export default defineComponent({
       this.getTotalData();
     },
     async getTotalData() {
-      const params = {
-        pageNumber: this.pageNumber - 1,
-        pageSize: this.pageSize,
+      const params: TableDataParams = {
+        page: this.pageNumber,
+        perPage: this.pageSize,
       };
       this.totalLoading = true;
       const { data } = await apis.getWdtTableData(params);
       this.totalLoading = false;
       ElLoading.service().close();
-      const { list = [], totalElements = 0, pageNumber = 1 } = data.data;
-      this.tableData = list;
+      const { rows = [], count = 0 } = data.data;
+      this.tableData = rows;
       this.chartInit();
-      this.pageNumber = pageNumber + 1;
-      this.totalCount = totalElements;
+      this.pageNumber = this.pageNumber;
+      this.totalCount = count;
       this.strLocalFlag = 'api';
     },
     handleRowClick(row: any) {

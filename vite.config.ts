@@ -46,8 +46,15 @@ export default defineConfig({
       '/api': {
         changeOrigin: true,
         secure: false,
-        target: 'http://localhost:8080' // local
-        // target: 'http://82.157.169.92:8080' // prod
+        // target: 'http://localhost:8080' // local
+        // target: 'https://www.kunqidata.com' // prod
+        target: 'http://10.254.7.167:8080' // prod
+      },
+      '/erupt-api': {
+        changeOrigin: true,
+        secure: false,
+        // target: 'http://localhost:8080' // local
+        target: 'https://www.kunqidata.com' // prod
       },
     }
   }

@@ -20,7 +20,7 @@ async function getTableHeader(params: TableHeaderParams = {}) {
   return request(adjustParams('/api/table-header', 'get', params))
 }
 // 获取Total数据
-async function getTableData(params: TableDataParams = {pageNumber: 0, pageSize: 10}) {
+async function getTableData(params: TableDataParams = {page: 0, perPage: 10}) {
   return request(adjustParams('/api/reportAll', 'get', {params}))
 }
 // 获取Sub Table数据
@@ -28,7 +28,7 @@ async function getSubTableData(params: SubTableDataParams = {pageNumber: 0, page
   return request(adjustParams('/api/reportSub', 'get', {params}))
 }
 // 获取Wdt Total数据
-async function getWdtTableData(params: TableDataParams = {pageNumber: 0, pageSize: 10}) {
+async function getWdtTableData(params: TableDataParams = {page: 0, perPage: 10}) {
   return request(adjustParams('/api/reportWdtAll', 'get', {params}))
 }
 // 获取Wdt Sub Table数据
@@ -40,6 +40,11 @@ async function importFile(params: any = {}) {
   return request(adjustParams('/api/saveWdtData', 'post', {params}))
 }
 
+// login
+async function login(params: loginParams) {
+  return request.post(`/erupt-api/login?account=${params.account}&pwd=${params.pwd}&verifyCode=null`)
+}
+
 const apis = {
   getTableHeader,
   getTableData,
@@ -47,5 +52,6 @@ const apis = {
   getWdtTableData,
   getWdtSubTableData,
   importFile,
+  login,
 }
 export default apis

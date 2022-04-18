@@ -10,8 +10,8 @@ interface SubTableDataParams {
   [key: string]: any
 }
 interface TableDataParams {
-  pageSize: number
-  pageNumber: number
+  page: number
+  perPage: number
   query?: string
   sort?: {
     key: string
@@ -22,4 +22,9 @@ interface TableDataParams {
 
 interface TableHeaderParams {
   list?: Array<string>
+}
+
+interface loginParams {
+  account: string
+  pwd: string
 }

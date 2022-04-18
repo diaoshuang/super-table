@@ -4,7 +4,12 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    redirect: '/totalwdt'
+    redirect: '/login'
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    component: () => import('../views/Login.vue')
   },
   {
     path: '/example',

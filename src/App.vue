@@ -12,7 +12,7 @@ export default defineComponent({
     PageLoading,
   },
   setup() {
-    const loading = ref(true);
+    const loading = ref(false);
     const changeLoading = (nV = false) => {
       loading.value = nV
     }
