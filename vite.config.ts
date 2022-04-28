@@ -47,8 +47,8 @@ export default defineConfig({
         changeOrigin: true,
         secure: false,
         // target: 'http://localhost:8080' // local
-        // target: 'https://www.kunqidata.com' // prod
-        target: 'http://10.254.7.167:8080' // prod
+        target: 'https://www.kunqidata.com' // prod
+        // target: 'http://10.254.7.167:8080' // prod
       },
       '/erupt-api': {
         changeOrigin: true,
@@ -57,5 +57,14 @@ export default defineConfig({
         target: 'https://www.kunqidata.com' // prod
       },
     }
-  }
+  },
+  css: {
+    // css预处理器
+    preprocessorOptions: {
+      scss: {
+        // 引入 variables.scss 这样就可以在全局中使用 variables.scss中预定义的变量了
+        additionalData: '@import "@/statics/styles/variables.scss";',
+      },
+    },
+  },
 })

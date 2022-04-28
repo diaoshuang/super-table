@@ -4,17 +4,17 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    redirect: '/login'
+    component: () => import('@/views/Home.vue')
   },
   {
-    path: '/login',
+    path: '/Login',
     name: 'Login',
-    component: () => import('../views/Login.vue')
+    component: () => import('@/components/Login.vue')
   },
   {
     path: '/example',
     name: 'Example',
-    component: () => import('../views/Example.vue')
+    component: () => import('@/views/Example.vue')
   },
   {
     path: '/tt',
