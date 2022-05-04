@@ -38,6 +38,10 @@ interface loginRes {
   useVerifyCode: boolean;
   userName: string | null;
 }
+interface userInfoRes {
+  icon: string;
+  name: string;
+}
 
 interface sidebarParams {}
 interface sidebarItem {
@@ -48,6 +52,7 @@ interface sidebarItem {
   pid: number;
   type: string;
   value: string;
+  children?: sidebarItem[];
 }
 interface Field {
   name: string;
@@ -60,10 +65,20 @@ interface DataInfoParams {
   endTime: string;
   marketingGoal: string;
   type: string;
+  advertiserId?: string;
   field: Field[];
 }
-interface DataInfoRes<T> {
+interface DataResponse<T> {
   status: number;
   msg: string;
   data: T;
+}
+
+interface UserShopItem {
+  account: string;
+  brandId: sring;
+  id: number;
+  shopId: string;
+  shopName: string;
+  [key: string]: string;
 }

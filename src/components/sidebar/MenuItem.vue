@@ -4,23 +4,19 @@ defineProps({
 });
 </script>
 <template>
-  <el-sub-menu
-    @click="$emit('click')"
-    v-if="menuItem?.children?.length > 0"
-    :index="menuItem.id"
-  >
+  <el-sub-menu v-if="menuItem.children?.length > 0" :index="menuItem.id">
     <template #title>
-      <el-icon v-if="menuItem.icon"><component :is="menuItem.icon" /></el-icon>
-      <span>{{ menuItem.title }}</span>
+      <!-- <el-icon v-if="menuItem.icon"><component :is="menuItem.icon" /></el-icon> -->
+      <span>{{ menuItem.name }}</span>
     </template>
     <MenuItem
-      v-for="(child, index) of menuItem.children"
-      :key="index"
+      v-for="child of menuItem.children"
+      :key="child.id"
       :menuItem="child"
     />
   </el-sub-menu>
   <el-menu-item @click="$emit('click')" v-else :index="menuItem.id">
-    <el-icon v-if="menuItem.icon"><component :is="menuItem.icon" /></el-icon>
-    <template #title>{{ menuItem.title }}</template>
+    <!-- <el-icon v-if="menuItem.icon"><component :is="menuItem.icon" /></el-icon> -->
+    <template #title>{{ menuItem.name }}</template>
   </el-menu-item>
 </template>

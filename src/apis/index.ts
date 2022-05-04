@@ -60,6 +60,10 @@ async function login(params: loginParams) {
     }`
   );
 }
+// getUserInfo
+async function getUserInfo() {
+  return request.post<userInfoRes>(`/erupt-api/getUserInfo`);
+}
 
 // sidebar list
 async function getSidebarInfo() {
@@ -68,10 +72,18 @@ async function getSidebarInfo() {
 
 // 数据接口
 async function getDataInfo(params: DataInfoParams) {
-  return request.get<DataInfoRes<(string | number)[][]>>(
-    `web/home/findAdvertiserData`,
-    { params }
+  const res = await request.post<DataResponse<(string | number)[][]>>(
+    `/api/web/home/findData`,
+    params
   );
+  return res.data;
+}
+// 用户店铺信息
+async function getUserShopList() {
+  const res = await request.post<DataResponse<UserShopItem[]>>(
+    '/api/web/home/findUserShop'
+  );
+  return res.data;
 }
 
 const apis = {
@@ -82,7 +94,9 @@ const apis = {
   getWdtSubTableData,
   importFile,
   login,
+  getUserInfo,
   getSidebarInfo,
   getDataInfo,
+  getUserShopList,
 };
 export default apis;

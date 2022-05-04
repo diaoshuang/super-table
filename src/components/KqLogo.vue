@@ -1,33 +1,34 @@
 <template>
-  <div>
-    <div class="logo" :class="size">
-      <slot name="logo-icon">
-        <img class="logo-icon" :src="logoIcon" />
+  <div class="logo" :class="size">
+    <slot name="logo-icon">
+      <img class="logo-icon" :src="logoIcon" />
+    </slot>
+    <div class="logo-title" v-show="!collapse" :style="`color: ${color}`">
+      <slot name="title">
+        {{ title }}
       </slot>
-      <div class="logo-title" :style="`color: ${color}`">
-        <slot name="title">
-          {{ title }}
-        </slot>
-      </div>
     </div>
   </div>
 </template>
-<script setup lang="ts">
+<script setup lang="ts" name="Logo">
 import logoIcon from '@/assets/logo.png';
 
 const props = defineProps({
   title: { type: String, default: '鲲麒数仓' },
   color: { type: String, default: '#ffffff' },
   size: { type: String, default: 'normal' },
+  collapse: { type: Boolean, default: false },
 });
 </script>
 <style lang="scss" scoped>
 .logo {
-  display: flex;
-  flex-direction: row;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
   max-width: 200px;
   height: 35px;
-  line-height: 35px;
+  line-height: 1;
+  text-align: center;
   &.small {
     font-size: 14px;
   }
@@ -42,8 +43,8 @@ const props = defineProps({
     height: 35px;
   }
   .logo-title {
-    flex: 1;
     margin: 0 0 0 14px;
+    max-width: 165px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;

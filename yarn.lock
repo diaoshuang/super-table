@@ -619,9 +619,9 @@ csstype@^2.6.8:
   resolved "https://registry.npmmirror.com/csstype/-/csstype-2.6.19.tgz"
   integrity sha512-ZVxXaNy28/k3kJg0Fou5MiYpp88j7H9hLZp8PDC3jV0WFjfH5E9xHb56L0W59cPbKbcHXeP4qyT8PrHp8t6LcQ==
 
-dayjs@^1.11.0:
+dayjs@^1.11.0, dayjs@^1.11.1:
   version "1.11.1"
-  resolved "https://registry.npmmirror.com/dayjs/-/dayjs-1.11.1.tgz"
+  resolved "https://registry.npmmirror.com/dayjs/-/dayjs-1.11.1.tgz#90b33a3dda3417258d48ad2771b415def6545eb0"
   integrity sha512-ER7EjqVAMkRRsxNCC5YqJ9d9VQYuWdGt7aiH2qA5R5wt8ZmWaP2dLUSIK6y/kVzLMlmh1Tvu5xUf4M/wdGJ5KA==
 
 debug@2.6.9:
@@ -690,9 +690,9 @@ domutils@^2.8.0:
     domelementtype "^2.2.0"
     domhandler "^4.2.0"
 
-echarts@^5.3.0:
+echarts@^5.3.2:
   version "5.3.2"
-  resolved "https://registry.npmmirror.com/echarts/-/echarts-5.3.2.tgz"
+  resolved "https://registry.npmmirror.com/echarts/-/echarts-5.3.2.tgz#0a7b3be8c48a48b2e7cb1b82121df0c208d42d2c"
   integrity sha512-LWCt7ohOKdJqyiBJ0OGBmE9szLdfA9sGcsMEi+GGoc6+Xo75C+BkcT/6NNGRHAWtnQl2fNow05AQjznpap28TQ==
   dependencies:
     tslib "2.3.0"

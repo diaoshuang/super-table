@@ -21,7 +21,7 @@
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue';
-import ELTable from '@/components/ELTable.vue';
+import ELTable from '@/components/canvas/ELTable.vue';
 import apis from '../apis';
 
 interface RowData {

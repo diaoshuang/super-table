@@ -8,7 +8,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import ColumnItem from './table/ColumnItem.vue';
+import ColumnItem from '@/components/table/ColumnItem.vue';
 
 export default defineComponent({
   name: 'ELTable',

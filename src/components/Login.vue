@@ -86,6 +86,8 @@ import type { FormInstance } from 'element-plus';
 import { ElMessage } from 'element-plus';
 import apis from '../apis';
 import { storage } from '../util';
+import { useUserStore } from '@/stores/user';
+import router from '@/router';
 
 const isSavePass = ref(false);
 const isShowVerifyCode = ref(false);
@@ -96,6 +98,7 @@ const loginForm = reactive<loginParams>({
   pwd: '',
   verifyCode: '',
 });
+const userStores = useUserStore();
 
 const init = () => {
   // 是否保存密码
@@ -126,6 +129,7 @@ const submitForm = (formEl: FormInstance | undefined) => {
         const loginInfo = res.data;
         if (loginInfo.pass) {
           ElMessage.success('登录成功！');
+          userStores.name = loginInfo.userName || '';
           storage.setStorage(
             '_token',
             JSON.stringify(loginInfo),
@@ -143,6 +147,7 @@ const submitForm = (formEl: FormInstance | undefined) => {
             );
           }
           // TODO 去往数据=首页
+          router.replace({ name: 'All' });
           return;
         }
         isShowVerifyCode.value = loginInfo?.useVerifyCode || false;

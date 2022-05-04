@@ -17,7 +17,6 @@
     <MyChart
       style="height: 200px"
       :loading="totalLoading"
-      :key="chartOptions"
       :chartOptions="chartOptions"
     />
   </div>
@@ -51,7 +50,7 @@
 import { defineComponent } from 'vue';
 import { ElLoading } from 'element-plus';
 import MyChart from '@/components/charts/Index.vue';
-import ELTable from '@/components/ELTable.vue';
+import ELTable from '@/components/canvas/ELTable.vue';
 import SubTable from '@/components/SubTableShow.vue';
 import apis from '../apis';
 

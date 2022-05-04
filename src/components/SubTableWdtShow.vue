@@ -1,10 +1,6 @@
 <template>
   <h2>明细({{ rowData.reportDate }})</h2>
-  <ELTable
-    :data="tableData"
-    height="500"
-    :headers="headers"
-  />
+  <ELTable :data="tableData" height="500" :headers="headers" />
   <div class="show-right">
     <el-pagination
       @size-change="handleSizeChange"
@@ -20,7 +16,7 @@
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue';
-import ELTable from '@/components/ELTable.vue';
+import ELTable from '@/components/canvas/ELTable.vue';
 import apis from '../apis';
 
 interface RowData {

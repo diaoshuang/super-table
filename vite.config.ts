@@ -1,10 +1,10 @@
-import { defineConfig } from 'vite'
-import { viteMockServe } from 'vite-plugin-mock'
-import vue from '@vitejs/plugin-vue'
-import externalGlobals from 'rollup-plugin-external-globals'
+import { defineConfig } from 'vite';
+import { viteMockServe } from 'vite-plugin-mock';
+import vue from '@vitejs/plugin-vue';
+import externalGlobals from 'rollup-plugin-external-globals';
 
-const localEnabled = process.env.USE_MOCK === 'true' || false
-const prodMock =  process.env.USE_CHUNK_MOCK === 'true' || false
+const localEnabled = process.env.USE_MOCK === 'true' || false;
+const prodMock = process.env.USE_CHUNK_MOCK === 'true' || false;
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -15,10 +15,10 @@ export default defineConfig({
         externalGlobals({
           vue: 'Vue',
           'element-plus': 'ElementPlus',
-          echarts: 'echarts'
+          echarts: 'echarts',
         }),
-      ]
-    }
+      ],
+    },
   },
   plugins: [
     vue(),
@@ -34,29 +34,37 @@ export default defineConfig({
         setupProdMockServer();
       `,
       logger: true, //是否在控制台显示请求日志
-    })
+    }),
   ],
   resolve: {
     alias: {
       '@': '/src',
-    }
+    },
   },
   server: {
+    hmr: true,
     proxy: {
       '/api': {
         changeOrigin: true,
         secure: false,
         // target: 'http://localhost:8080' // local
-        target: 'https://www.kunqidata.com' // prod
+        target: 'https://www.kunqidata.com', // prod
+        // target: 'http://10.254.7.167:8080' // prod
+      },
+      '/web': {
+        changeOrigin: true,
+        secure: false,
+        // target: 'http://localhost:8080' // local
+        target: 'https://www.kunqidata.com', // prod
         // target: 'http://10.254.7.167:8080' // prod
       },
       '/erupt-api': {
         changeOrigin: true,
         secure: false,
         // target: 'http://localhost:8080' // local
-        target: 'https://www.kunqidata.com' // prod
+        target: 'https://www.kunqidata.com', // prod
       },
-    }
+    },
   },
   css: {
     // css预处理器
@@ -67,4 +75,4 @@ export default defineConfig({
       },
     },
   },
-})
+});
