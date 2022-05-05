@@ -32,8 +32,9 @@ const friendImages = [
 <style scoped lang="scss">
 .content-friends {
   background: url('@/statics/images/friends.png') no-repeat center bottom;
-  background-size: 100% calc(100vh - 320px);
+  background-size: 100% calc(100% - 390px);
   height: calc(100vh + 70px);
+  min-height: 700px;
   overflow: hidden;
   .friends {
     min-height: 240px;

@@ -139,7 +139,8 @@ onBeforeUnmount(() => {
     background: url('@/statics/images/home-1.png') no-repeat center center;
     background-size: 100% 100%;
     color: $cf-write;
-    height: 100vh;
+    height: calc(100vh - 90px);
+    min-height: 600px;
     overflow: hidden;
     position: relative;
     .title {

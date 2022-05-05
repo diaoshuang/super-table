@@ -23,6 +23,9 @@ interface TableDataParams {
 interface TableHeaderParams {
   list?: Array<string>;
 }
+interface TableDataItem {
+  [key: string]: string | number;
+}
 
 interface loginParams {
   account: string;
@@ -60,6 +63,10 @@ interface Field {
   source: string;
   type: string;
 }
+interface ChartField extends Field {
+  chartType?: string;
+  yAxisIndex?: number;
+}
 interface DataInfoParams {
   startTime: string;
   endTime: string;
@@ -67,6 +74,10 @@ interface DataInfoParams {
   type: string;
   advertiserId?: string;
   field: Field[];
+}
+interface Top10DataInfoParams {
+  startTime: string;
+  endTime: string;
 }
 interface DataResponse<T> {
   status: number;

@@ -1,6 +1,6 @@
 // index.ts
 import axios, { AxiosRequestConfig, Method, AxiosError } from 'axios';
-import router from '../router';
+import router from '@/router';
 import { ElMessage } from 'element-plus';
 import { getStorage } from '../util/storage';
 
@@ -10,7 +10,7 @@ import { getStorage } from '../util/storage';
  */
 const toLogin = () => {
   router.replace({
-    name: 'LoginPage',
+    name: 'Login',
   });
 };
 
@@ -33,20 +33,14 @@ const errorHandle = (status: number, other: string) => {
     // 未登录则跳转登录页面，并携带当前页面的路径
     // 在登录成功后返回当前页面，这一步需要在登录页操作。
     case 401: //重定向
-      ElMessage.error('token:登录失效==>' + status);
-      router.replace({
-        path: '/Login',
-      });
+      // ElMessage.error('token:登录失效==>' + status);
+      toLogin();
       break;
     // 403 token过期
     // 清除token并跳转登录页
     case 403:
       ElMessage.error('登录过期,用户得到授权，但是访问是被禁止的==>' + status);
-      setTimeout(() => {
-        router.replace({
-          path: '/Login',
-        });
-      }, 1000);
+      toLogin();
       break;
     case 404:
       ElMessage.error('网络请求不存在==>' + status);
@@ -112,7 +106,8 @@ const removePending = (config: AxiosRequestConfig) => {
       list.url === config.url &&
       list.method === config.method &&
       JSON.stringify(list.params) === JSON.stringify(config.params) &&
-      JSON.stringify(list.data) === JSON.stringify(config.data)
+      JSON.stringify(list.data) === JSON.stringify(config.data) &&
+      !list.url?.includes('/api/web')
     ) {
       // 执行取消操作
       list.cancel('操作太频繁，请稍后再试');
@@ -132,7 +127,7 @@ const instance = axios.create({
   // 请求时长
   timeout: 1000 * 10,
   // 请求的base地址 TODO:这块以后根据不同的模块调不同的api
-  baseURL: '',
+  baseURL: '/erupt-api',
   //     ? "测试"
   //     : "正式",
   // 表示跨域请求时是否需要使用凭证

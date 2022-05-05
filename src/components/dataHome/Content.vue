@@ -34,22 +34,108 @@
     </slot>
     <slot name="canvas">
       <el-row class="data-line">
-        <el-col :span="24">
+        <el-col class="data-area" :span="24">
           <FirstChart class="first-chart" :conditions="conditions" />
         </el-col>
       </el-row>
-      <el-row :gutter="20">
-        <el-col :span="12"> 1</el-col>
-        <el-col :span="12">2</el-col>
+      <el-row class="data-line">
+        <el-col class="data-area" :span="24">
+          <SecondTable class="first-chart" :conditions="conditions" />
+        </el-col>
+      </el-row>
+      <el-row class="data-line" :gutter="20">
+        <el-col class="data-area" :span="12">
+          <TotalSingleChart
+            class="small-chart"
+            title="账户总消耗/总收入情况"
+            :keys="totalCostPay"
+            :conditions="conditions"
+          />
+        </el-col>
+        <el-col class="data-area" :span="12">
+          <TotalSingleChart
+            title="账户订单金额/订单转化率情况"
+            :keys="order"
+            :customOptions="customOptions"
+            class="small-chart"
+            :conditions="conditions"
+          />
+        </el-col>
+      </el-row>
+      <el-row class="data-line" :gutter="20">
+        <el-col class="data-area" :span="12">
+          <TotalSingleChart
+            class="small-chart"
+            title="账户成交金额/订单成交率情况"
+            :keys="deal"
+            :customOptions="customOptions"
+            :conditions="conditions"
+          />
+        </el-col>
+        <el-col class="data-area" :span="12">
+          <TotalSingleChart
+            title="账户展示数/点击率情况"
+            :keys="showClick"
+            :customOptions="customOptions"
+            class="small-chart"
+            :conditions="conditions"
+          />
+        </el-col>
       </el-row>
     </slot>
   </div>
 </template>
 <script lang="ts" setup>
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted, ref, reactive } from 'vue';
 import Filters from './Filter.vue';
+import TotalSingleChart from '@/components/dataCharts/TotalSingleChart.vue';
 import FirstChart from '@/components/dataCharts/FirstChart.vue';
+import SecondTable from '@/components/dataCharts/SecondTable.vue';
+import { DATA_HOME } from '@/constants/fields';
 import apis from '@/apis';
+import { EChartsOption } from 'echarts';
+
+const totalCostPay = ref([DATA_HOME.stat_cost2, DATA_HOME.pay_order_amount2]);
+const order = ref([
+  DATA_HOME.create_order_amount,
+  {
+    ...DATA_HOME.convert_rate,
+    chartType: 'line',
+    yAxisIndex: 1,
+  },
+]);
+const customOptions = ref<EChartsOption & any>({
+  yAxis: [
+    {
+      type: 'value',
+      name: DATA_HOME.create_order_amount.describe,
+    },
+    {
+      type: 'value',
+      name: DATA_HOME.convert_rate.describe,
+      axisLabel: {
+        formatter: '{value} %',
+      },
+    },
+  ],
+});
+
+const deal = ref([
+  DATA_HOME.pay_order_amount3,
+  {
+    ...DATA_HOME.pay_order_rate,
+    chartType: 'line',
+    yAxisIndex: 1,
+  },
+]);
+const showClick = ref([
+  DATA_HOME.show_cnt,
+  {
+    ...DATA_HOME.ctr,
+    chartType: 'line',
+    yAxisIndex: 1,
+  },
+]);
 
 type ShowItem = {
   label: string | number;
@@ -113,13 +199,15 @@ onMounted(async () => {
 .filter-line + .filter-line {
   margin-top: 20px;
 }
-.data-line {
-  background: #fff;
-}
 .data-line + .data-line {
   margin-top: 20px;
 }
 .first-chart {
   height: 500px;
+}
+.small-chart {
+  background: #fff;
+  margin: 0;
+  height: 350px;
 }
 </style>

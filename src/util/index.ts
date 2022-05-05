@@ -1,5 +1,3 @@
-import storage, * as storages from './storage'
+import storage from './storage';
 
-export {
-  storage
-}
+export { storage };

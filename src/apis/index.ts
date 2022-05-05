@@ -55,25 +55,34 @@ async function importFile(params: any = {}) {
 // login
 async function login(params: loginParams) {
   return request.post<loginRes>(
-    `/erupt-api/login?account=${params.account}&pwd=${params.pwd}&verifyCode=${
+    `/login?account=${params.account}&pwd=${params.pwd}&verifyCode=${
       params.verifyCode || 'null'
     }`
   );
 }
 // getUserInfo
 async function getUserInfo() {
-  return request.post<userInfoRes>(`/erupt-api/getUserInfo`);
+  return request.post<userInfoRes>(`/getUserInfo`);
 }
 
 // sidebar list
 async function getSidebarInfo() {
-  return request.get<Array<sidebarItem>>(`/erupt-api/menu`);
+  return request.get<Array<sidebarItem>>(`/menu`);
 }
 
-// 数据接口
+// 图表数据接口
 async function getDataInfo(params: DataInfoParams) {
   const res = await request.post<DataResponse<(string | number)[][]>>(
     `/api/web/home/findData`,
+    params
+  );
+  return res.data;
+}
+
+// Top10 表格数据接口
+async function getAdTop10Data(params: Top10DataInfoParams) {
+  const res = await request.post<DataResponse<TableDataItem[]>>(
+    `/api/web/home/findAdvertiserData`,
     params
   );
   return res.data;
@@ -98,5 +107,6 @@ const apis = {
   getSidebarInfo,
   getDataInfo,
   getUserShopList,
+  getAdTop10Data,
 };
 export default apis;

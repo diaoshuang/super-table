@@ -10,8 +10,9 @@
 <style scoped lang="scss">
 .content-about {
   background: url('@/statics/images/about.png') no-repeat center bottom;
-  background-size: 100% calc(100vh - 240px);
+  background-size: 100% calc(100% - 320px);
   height: 100vh;
+  min-height: 700px;
   overflow: hidden;
   padding-top: 140px;
   text-align: center;

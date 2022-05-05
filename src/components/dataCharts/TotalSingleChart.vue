@@ -1,25 +1,23 @@
 <script lang="ts" setup>
-import { computed, reactive, ref, toRefs, watch, watchEffect } from 'vue';
+import { computed, ref, toRefs, watchEffect } from 'vue';
 import Chart from '@/components/charts/Index.vue';
-import SetData from '@/components/setData/Index.vue';
 import { EChartsOption } from 'echarts';
 import dayjs from 'dayjs';
-import { DATA_HOME, DATE_FORMAT } from '@/constants/fields';
+import { DATE_FORMAT } from '@/constants/fields';
 import apis from '@/apis';
-type ShowItem = {
-  label: string | number;
-  value: string | number;
-};
 interface Props {
   conditions: {
     selectDate: string;
   };
+  keys: ChartField[];
+  title?: string;
+  customOptions?: EChartsOption;
 }
 
 // -------------------- 配置处理 -------------------------
 const props = defineProps<Props>();
 
-const { conditions } = toRefs(props);
+const { conditions, keys, title, customOptions } = toRefs(props);
 
 const dataParams = computed(() => {
   if (!conditions.value.selectDate) {
@@ -31,7 +29,7 @@ const dataParams = computed(() => {
   const startTime = dayjs()
     .subtract(Number(deviationValue[0]), deviationValue[1])
     .format(DATE_FORMAT);
-  const field = [DATA_HOME.pay_order_amount, DATA_HOME.stat_cost];
+  const field = keys.value;
   return {
     startTime,
     endTime,
@@ -41,27 +39,23 @@ const dataParams = computed(() => {
   };
 });
 const options = computed<EChartsOption>(() => {
-  const series: any[] = [
-    DATA_HOME.pay_order_amount.describe,
-    DATA_HOME.stat_cost.describe,
-  ].map((key) => ({
-    name: key,
-    type: 'bar',
+  const series: any[] = keys.value.map((key) => ({
+    name: key.describe,
+    type: key.chartType || 'bar',
+    yAxisIndex: key.yAxisIndex || 0,
     data: [],
-    markLine: {
-      data: [{ type: 'average', name: 'Avg' }],
-    },
   }));
   return {
     tooltip: {
       trigger: 'axis',
     },
     legend: {
-      data: [DATA_HOME.pay_order_amount.describe, DATA_HOME.stat_cost.describe],
+      data: keys.value.map((key) => key.describe),
     },
     xAxis: { type: 'category' },
     yAxis: {},
     series,
+    ...(customOptions?.value || {}),
   };
 });
 
@@ -149,14 +143,14 @@ const initOptionData = async () => {
 };
 
 watchEffect(() => {
-  if (conditions.value.selectDate) {
+  if (conditions.value.selectDate && keys.value) {
     initOptionData();
   }
 });
 </script>
 <template>
   <div class="chart-content" v-loading="loading">
-    <h3>平台整体数据情况</h3>
+    <h3 v-if="title">{{ title }}</h3>
     <el-result
       v-if="!loading && errorMsg"
       icon="error"
@@ -174,6 +168,6 @@ watchEffect(() => {
 <style lang="scss" scoped>
 .chart-content {
   background: #fff;
-  padding: 30px 30px 0;
+  padding: 30px;
 }
 </style>

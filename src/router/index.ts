@@ -12,9 +12,9 @@ const routes = [
     component: () => import('@/views/DataHome.vue'),
   },
   {
-    path: '/Login',
+    path: '/login',
     name: 'Login',
-    component: () => import('@/components/Login.vue'),
+    component: () => import('@/views/Home.vue'),
   },
   {
     path: '/example',
